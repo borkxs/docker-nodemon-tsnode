@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# TODO: I think this all might be what docker-compose is for...?
+
+# 1. build the image from the Dockerfile
+docker build -t voldock .
+
+# 2. create and run the container
+
+## stop and remove existing container
+## it seems that these can "error" when it doesn't exist and it won't bother us
+docker stop volt
+docker rm volt
+
+## start the container in background, with port bindings, and bind mount volume
+docker run -d -p 5050:8080 -v "$PWD/voldock":/home/nodejs/app --name volt voldock
+
+echo "The container is started and running in the background."
